@@ -35,7 +35,7 @@
         .tech-badge { display: inline-block; padding: 6px 12px; background: rgba(225, 29, 72, 0.1); border-left: 3px solid var(--primary); color: var(--primary); font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px; }
         .hero h1 { font-size: 64px; font-weight: 800; margin: 0 0 24px 0; line-height: 1.1; letter-spacing: -1px; }
         .hero p { font-size: 18px; color: var(--text-muted); line-height: 1.6; margin-bottom: 40px; max-width: 500px; }
-        .hero-img { position: absolute; right: 0; top: 0; width: 50%; height: 100%; background: url('https://images.unsplash.com/photo-1503376712351-40b49f485db6?auto=format&fit=crop&q=80&w=1200') center/cover; -webkit-mask-image: linear-gradient(to right, transparent, black 30%); mask-image: linear-gradient(to right, transparent, black 30%); z-index: 1; opacity: 0.8; }
+        .hero-img { position: absolute; right: 0; top: 0; width: 50%; height: 100%; background: url('https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&q=80&w=1200') center/cover; -webkit-mask-image: linear-gradient(to right, transparent, black 30%); mask-image: linear-gradient(to right, transparent, black 30%); z-index: 1; opacity: 0.8; }
 
         /* Sleek Stats Strip */
         .stats-strip { display: flex; background: var(--bg-surface); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 0 60px; }
@@ -87,11 +87,6 @@
         .send-btn { background: var(--primary); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 0.2s; font-family: 'Outfit', sans-serif; }
         .send-btn:hover { background: #be123c; }
         .send-btn:disabled { background: var(--border-color); color: var(--text-muted); cursor: not-allowed; }
-        
-        /* Dark Mode Quick Replies */
-        .btn-container { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-top: 5px; }
-        .quick-reply { background: transparent; border: 1px solid var(--primary); color: var(--text-main); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
-        .quick-reply:hover { background: var(--primary); color: white; }
 
         /* Hacker-Style Dev Panel */
         .backend-panel { position: fixed; top: 0; left: -650px; width: 600px; height: 100vh; background: #000; color: #33ff33; z-index: 200; padding: 40px; box-sizing: border-box; overflow-y: auto; transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #33ff33; font-family: monospace; }
@@ -100,8 +95,11 @@
         .panel-close-btn { background: transparent; color: #33ff33; border: none; font-size: 24px; cursor: pointer; }
         .backend-panel p { color: #888; font-size: 12px; }
         .iframe-container { margin-bottom: 30px; border: 1px solid #33ff33; height: 350px; position: relative; }
-        .iframe-container iframe { width: 100%; height: 100%; border: none; filter: invert(1) hue-rotate(180deg) grayscale(1); } /* Pseudo-dark mode for Google iframes */
+        .iframe-container iframe { width: 100%; height: 100%; border: none; filter: invert(1) hue-rotate(180deg) grayscale(1); }
         .panel-label { font-size: 11px; text-transform: uppercase; color: #33ff33; margin-bottom: 8px; display: block; letter-spacing: 1px; }
+        
+        /* New Terminal Style */
+        .sms-terminal { background: #050505; color: #33ff33; padding: 15px; border: 1px solid #33ff33; height: 180px; overflow-y: auto; font-size: 13px; line-height: 1.5; }
 
         /* Mobile Adjustments */
         @media (max-width: 768px) {
@@ -128,12 +126,13 @@
         </h2>
         <p>> INITIALIZING LIVE TELEMETRY...<br>> MONITORING WEBHOOK TRAFFIC...<br>> AWAITING DATABASE SYNC...</p>
         
-        <span class="panel-label">>> GOOGLE_CALENDAR_STREAM</span>
-        <div class="iframe-container">
-            <iframe src="https://calendar.google.com/calendar/embed?src=sakuramisakikawaii%40gmail.com&ctz=Asia%2FManila&bgcolor=%23000000" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+        <!-- Replaced SMS with Email Dispatch Terminal -->
+        <span class="panel-label">>> EMAIL_OUTBOUND_DISPATCHER</span>
+        <div class="sms-terminal" id="smsTerminal">
+            > EMAIL MODULE ONLINE. AWAITING TRIGGERS...<br>
         </div>
 
-        <span class="panel-label">>> LEAD_DATABASE_CONNECTION</span>
+        <span class="panel-label" style="margin-top: 30px;">>> LEAD_DATABASE_CONNECTION</span>
         <div class="iframe-container">
             <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2No54tpOdLhI3xUyJf0few-si1qAvoKpib1KIuZM7AlQiJElqZCGtOXKL1PQQqC1vtlB3IyA4wdmW/pubhtml?gid=1185723188&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
         </div>
@@ -278,26 +277,6 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        function appendButtons(buttonsArray) {
-            if (!buttonsArray || buttonsArray.length === 0) return;
-            const container = document.createElement("div");
-            container.className = "btn-container";
-            
-            buttonsArray.forEach(btnText => {
-                const btn = document.createElement("button");
-                btn.className = "quick-reply";
-                btn.innerText = btnText;
-                btn.onclick = () => {
-                    container.style.display = "none";
-                    userInput.value = btnText;
-                    sendMessage();
-                };
-                container.appendChild(btn);
-            });
-            chatBox.appendChild(container);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
         async function sendMessage() {
             const text = userInput.value.trim();
             if (!text) return;
@@ -318,8 +297,31 @@
                 const data = await response.json();
                 
                 appendMessage(data.text || "Sorry, I encountered an error.", "bot");
-                if (data.buttons) {
-                    appendButtons(data.buttons);
+
+                // --- LIVE EMAIL TERMINAL SIMULATION LOGIC ---
+                if (data.trigger_follow_up === true || data.trigger_follow_up === "true") {
+                    const smsTerminal = document.getElementById("smsTerminal");
+                    const panel = document.getElementById("backendPanel");
+                    
+                    // Auto-open panel so they see the magic happen
+                    if (!panel.classList.contains("open")) {
+                        panel.classList.add("open");
+                    }
+
+                    // Print the initial queue warning
+                    smsTerminal.innerHTML += `<br><span style="color: #f59e0b;">> [LEAD ACQUIRED] Auto-Follow-up Sequence queued for ${data.lead_name || 'Client'} (${data.lead_email || 'Email'}). Dispatching in 60s...</span><br>`;
+                    smsTerminal.scrollTop = smsTerminal.scrollHeight;
+
+                    // 60-second delay before firing the simulated EMAIL
+                    setTimeout(() => {
+                        const time = new Date().toLocaleTimeString();
+                        const smsMsg = `Hi ${data.lead_name || 'there'}, it's SoCal Auto Works. Checking in on your vehicle! Did you still need an estimate for the ${data.car_issue || 'repair'}? Let us know!`;
+                        
+                        smsTerminal.innerHTML += `<br><span style="color: #34d399;">[${time}] > EMAIL DISPATCHED SUCCESSFULLY</span><br>`;
+                        smsTerminal.innerHTML += `<span style="color: white;">TO: ${data.lead_email || 'Unknown Email'}</span><br>`;
+                        smsTerminal.innerHTML += `<span style="color: #94a3b8;">PAYLOAD: "${smsMsg}"</span><br>`;
+                        smsTerminal.scrollTop = smsTerminal.scrollHeight;
+                    }, 60000); 
                 }
 
             } catch (error) {
