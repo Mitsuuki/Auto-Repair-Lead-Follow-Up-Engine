@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // THE SELF-HEALING CACHE BUSTER
+        const currentVersion = "2.0"; // Just change this number when you update your code!
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (urlParams.get('v') !== currentVersion) {
+            // Phone is using old cache. Force silent reload to the newest version.
+            window.location.replace(window.location.pathname + '?v=' + currentVersion);
+        }
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoCal Auto Works | AI-Powered Diagnostics</title>
