@@ -13,7 +13,7 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, interactive-widget=resizes-content">
     <title>SoCal Auto Works | AI-Powered Diagnostics</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
@@ -340,11 +340,13 @@
 
             } catch (error) {
                 appendMessage("System offline. Could not connect to backend.", "bot");
+                console.error("Transmission Error:", error);
             } finally {
                 userInput.disabled = false;
                 sendBtn.disabled = false;
                 sendBtn.innerText = "Send";
                 userInput.focus();
+                appendMessage("Network error or outdated browser detected. Please check your connection or call us directly.", "bot");
             }
         }
 
