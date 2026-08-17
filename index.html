@@ -11,7 +11,7 @@
             window.location.replace(window.location.pathname + '?v=' + currentVersion);
         }
     </script>
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoCal Auto Works | AI-Powered Diagnostics</title>
@@ -240,7 +240,7 @@
 
     <script>
         // --- MATCHES YOUR EXACT WEBHOOK PATH ---
-      const N8N_WEBHOOK_URL = "https://helper-rubbing-refrain.ngrok-free.dev/webhook/apex-repair-chat";
+      const N8N_WEBHOOK_URL = "https://helper-rubbing-refrain.ngrok-free.dev/webhook/apex-repair-chat?t=" + Date.now();
         
       function toggleBackend() {
             document.getElementById('backendPanel').classList.toggle('open');
