@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- 1. THE SELF-HEALING CACHE BUSTER -->
     <script>
-        // THE SELF-HEALING CACHE BUSTER
-        const currentVersion = "2.0"; // Just change this number when you update your code!
+        const currentVersion = "2.1"; // Updated version
         const urlParams = new URLSearchParams(window.location.search);
-        
         if (urlParams.get('v') !== currentVersion) {
-            // Phone is using old cache. Force silent reload to the newest version.
             window.location.replace(window.location.pathname + '?v=' + currentVersion);
         }
     </script>
-
-    <meta charset="UTF-8">
+    
+    <!-- 2. MOBILE ZOOM FIX -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, interactive-widget=resizes-content">
+    <meta charset="UTF-8">
     <title>SoCal Auto Works | AI-Powered Diagnostics</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
@@ -32,8 +31,30 @@
         * { box-sizing: border-box; }
         body { font-family: 'Outfit', sans-serif; margin: 0; padding: 0; background: var(--bg-base); color: var(--text-main); overflow-x: hidden; scroll-behavior: smooth; }
         
+        /* --- NEW ANIMATIONS --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 var(--primary-glow); }
+            70% { box-shadow: 0 0 0 15px rgba(225, 29, 72, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+        }
+        .fade-in { opacity: 0; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.3s; }
+        .delay-3 { animation-delay: 0.5s; }
+        .delay-4 { animation-delay: 0.7s; }
+
         /* Premium Navbar */
         header { background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(12px); padding: 20px 60px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 50; border-bottom: 1px solid var(--border-color); }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        
+        /* --- NEW BACK BUTTON --- */
+        .back-btn { display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px; border-radius: 50%; text-decoration: none; transition: all 0.3s ease; }
+        .back-btn:hover { background: var(--bg-elevated); color: var(--text-main); border-color: var(--text-muted); transform: translateX(-3px); }
+        
         .logo { font-size: 22px; font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         .logo span { color: var(--primary); }
         
@@ -50,7 +71,8 @@
 
         /* Sleek Stats Strip */
         .stats-strip { display: flex; background: var(--bg-surface); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 0 60px; }
-        .stat-box { flex: 1; padding: 30px; border-right: 1px solid var(--border-color); }
+        .stat-box { flex: 1; padding: 30px; border-right: 1px solid var(--border-color); transition: background 0.3s; }
+        .stat-box:hover { background: rgba(225, 29, 72, 0.05); }
         .stat-box:last-child { border-right: none; }
         .stat-val { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 5px; }
         .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
@@ -62,19 +84,20 @@
         .section-header p { color: var(--text-muted); font-size: 16px; margin: 0; }
         
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-        .service-card { background: var(--bg-surface); border: 1px solid var(--border-color); padding: 40px 30px; border-radius: 8px; transition: all 0.3s ease; position: relative; overflow: hidden; }
-        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); transform: scaleY(0); transition: transform 0.3s ease; }
-        .service-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .service-card { background: var(--bg-surface); border: 1px solid var(--border-color); padding: 40px 30px; border-radius: 8px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); transform: scaleY(0); transition: transform 0.4s ease; transform-origin: bottom; }
+        .service-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
         .service-card:hover::before { transform: scaleY(1); }
-        .service-icon { font-size: 32px; margin-bottom: 20px; }
+        .service-icon { font-size: 32px; margin-bottom: 20px; transition: transform 0.3s; }
+        .service-card:hover .service-icon { transform: scale(1.1); }
         .service-card h3 { font-size: 22px; margin: 0 0 15px 0; }
         .service-card p { color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 30px; }
-        .service-action { color: var(--primary); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-        .service-action:hover { text-decoration: underline; }
+        .service-action { color: var(--primary); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: gap 0.3s; }
+        .service-action:hover { gap: 12px; }
 
         /* Floating Dark Chat Button */
-        .chat-toggle { position: fixed; bottom: 40px; right: 40px; width: 65px; height: 65px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 24px; box-shadow: 0 10px 25px var(--primary-glow); cursor: pointer; z-index: 100; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; }
-        .chat-toggle:hover { transform: scale(1.1); }
+        .chat-toggle { position: fixed; bottom: 40px; right: 40px; width: 65px; height: 65px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 24px; box-shadow: 0 10px 25px var(--primary-glow); cursor: pointer; z-index: 100; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; animation: pulseGlow 2.5s infinite; }
+        .chat-toggle:hover { transform: scale(1.1); animation: none; }
         .chat-toggle.hidden { transform: scale(0) rotate(90deg); opacity: 0; pointer-events: none; }
 
         /* Dark Mode Chat Widget */
@@ -85,17 +108,25 @@
         .chat-header-left { display: flex; align-items: center; gap: 10px; font-size: 15px; }
         .chat-header .dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
         .close-chat-btn { background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; transition: color 0.2s; }
-        .close-chat-btn:hover { color: white; }
+        .close-chat-btn:hover { color: white; transform: rotate(90deg); }
         
-        .chat-box { height: 400px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; background: var(--bg-base); }
-        .msg { max-width: 85%; padding: 14px 18px; border-radius: 12px; font-size: 14px; line-height: 1.5; }
+        .chat-box { height: 400px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; background: var(--bg-base); scroll-behavior: smooth; }
+        .msg { max-width: 85%; padding: 14px 18px; border-radius: 12px; font-size: 14px; line-height: 1.5; animation: fadeInUp 0.3s ease; }
         .msg.bot { background: var(--bg-elevated); color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border-color); }
         .msg.user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
         
-        .chat-input-area { padding: 15px; background: var(--bg-elevated); border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
-        input[type="text"] { flex: 1; padding: 14px; background: var(--bg-base); border: 1px solid var(--border-color); color: white; border-radius: 8px; outline: none; font-size: 14px; transition: border 0.2s; font-family: 'Outfit', sans-serif; }
-        input[type="text"]:focus { border-color: var(--primary); }
-        .send-btn { background: var(--primary); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 0.2s; font-family: 'Outfit', sans-serif; }
+        /* --- ADDED TYPING INDICATOR --- */
+        .typing-indicator { display: none; align-items: center; gap: 4px; padding: 14px 18px; width: fit-content; background: var(--bg-elevated); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border-color); border-radius: 12px;}
+        .typing-indicator span { display: block; width: 6px; height: 6px; background-color: var(--text-muted); border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* --- UPGRADED AUTO-EXPANDING INPUT --- */
+        .chat-input-area { padding: 15px; background: var(--bg-elevated); border-top: 1px solid var(--border-color); display: flex; gap: 10px; align-items: flex-end;}
+        textarea#user-input { flex: 1; padding: 12px 14px; background: var(--bg-base); border: 1px solid var(--border-color); color: white; border-radius: 8px; outline: none; font-size: 14px; transition: border 0.2s; font-family: 'Outfit', sans-serif; resize: none; max-height: 120px; min-height: 20px; box-sizing: border-box; overflow-y: hidden; line-height: 1.5; }
+        textarea#user-input:focus { border-color: var(--primary); }
+        .send-btn { background: var(--primary); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 0.2s; font-family: 'Outfit', sans-serif; display: flex; align-items: center; justify-content: center; height: 44px; margin-bottom: 2px;}
         .send-btn:hover { background: #be123c; }
         .send-btn:disabled { background: var(--border-color); color: var(--text-muted); cursor: not-allowed; }
 
@@ -103,13 +134,13 @@
         .backend-panel { position: fixed; top: 0; left: -650px; width: 600px; height: 100vh; background: #000; color: #33ff33; z-index: 200; padding: 40px; box-sizing: border-box; overflow-y: auto; transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid #33ff33; font-family: monospace; }
         .backend-panel.open { left: 0; }
         .backend-panel h2 { margin-top: 0; border-bottom: 1px dashed #33ff33; padding-bottom: 15px; color: #fff; display: flex; align-items: center; justify-content: space-between; font-size: 16px; letter-spacing: 2px; }
-        .panel-close-btn { background: transparent; color: #33ff33; border: none; font-size: 24px; cursor: pointer; }
+        .panel-close-btn { background: transparent; color: #33ff33; border: none; font-size: 24px; cursor: pointer; transition: transform 0.3s; }
+        .panel-close-btn:hover { transform: rotate(90deg); color: #fff;}
         .backend-panel p { color: #888; font-size: 12px; }
         .iframe-container { margin-bottom: 30px; border: 1px solid #33ff33; height: 350px; position: relative; }
         .iframe-container iframe { width: 100%; height: 100%; border: none; filter: invert(1) hue-rotate(180deg) grayscale(1); }
         .panel-label { font-size: 11px; text-transform: uppercase; color: #33ff33; margin-bottom: 8px; display: block; letter-spacing: 1px; }
         
-        /* New Terminal Style */
         .sms-terminal { background: #050505; color: #33ff33; padding: 15px; border: 1px solid #33ff33; height: 180px; overflow-y: auto; font-size: 13px; line-height: 1.5; }
 
         /* Mobile Adjustments */
@@ -137,7 +168,6 @@
         </h2>
         <p>> INITIALIZING LIVE TELEMETRY...<br>> MONITORING WEBHOOK TRAFFIC...<br>> AWAITING DATABASE SYNC...</p>
         
-        <!-- Replaced SMS with Email Dispatch Terminal -->
         <span class="panel-label">>> EMAIL_OUTBOUND_DISPATCHER</span>
         <div class="sms-terminal" id="smsTerminal">
             > EMAIL MODULE ONLINE. AWAITING TRIGGERS...<br>
@@ -151,7 +181,12 @@
 
     <!-- Navigation Header -->
     <header>
-        <div class="logo">SoCal <span>AutoWorks</span></div>
+        <div class="header-left">
+            <a href="https://mitsuuki.github.io/demo-hub/" class="back-btn" title="Back to Demo Hub">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </a>
+            <div class="logo">SoCal <span>AutoWorks</span></div>
+        </div>
         <button class="dev-btn" onclick="toggleBackend()">[ Access Terminal ]</button>
     </header>
 
@@ -159,10 +194,10 @@
     <section class="hero">
         <div class="hero-img"></div>
         <div class="hero-content">
-            <div class="tech-badge">Powered by AI • Hablamos Español</div>
-            <h1>Stop Missing Leads in the Shop.</h1>
-            <p>While you are under the hood, our bilingual AI Receptionist answers questions, logs vehicle issues, and automates your follow-ups instantly.</p>
-            <div style="display: flex; gap: 15px; margin-top: 30px;">
+            <div class="tech-badge fade-in">Powered by AI • Hablamos Español</div>
+            <h1 class="fade-in delay-1">Stop Missing Leads in the Shop.</h1>
+            <p class="fade-in delay-2">While you are under the hood, our bilingual AI Receptionist answers questions, logs vehicle issues, and automates your follow-ups instantly.</p>
+            <div style="display: flex; gap: 15px; margin-top: 30px;" class="fade-in delay-3">
                 <button class="dev-btn" style="background: var(--primary); color: white; border: none;" onclick="openChatWithPrefill('Hola, necesito ayuda con mi carro')">Test AI Spanish</button>
                 <button class="dev-btn" onclick="openChatWithPrefill('I need a repair estimate')">Test AI English</button>
             </div>
@@ -170,7 +205,7 @@
     </section>
 
     <!-- Stats Strip -->
-    <div class="stats-strip">
+    <div class="stats-strip fade-in delay-4">
         <div class="stat-box">
             <div class="stat-val">24/7</div>
             <div class="stat-label">Instant Responses</div>
@@ -187,27 +222,27 @@
 
     <!-- Minimalist Services Section -->
     <section class="services-section">
-        <div class="section-header">
+        <div class="section-header fade-in">
             <h2>Supported Workflows</h2>
             <p>Click a module to test the live AI extraction protocols.</p>
         </div>
 
         <div class="services-grid">
-            <div class="service-card">
+            <div class="service-card fade-in delay-1">
                 <div class="service-icon">⚙️</div>
                 <h3>Engine Diagnostics</h3>
                 <p>Automate data collection for Check Engine lights, weird noises, and poor performance before the car hits the lot.</p>
                 <div class="service-action" onclick="openChatWithPrefill('My check engine light is flashing')">Run Test Scenario &rarr;</div>
             </div>
 
-            <div class="service-card">
+            <div class="service-card fade-in delay-2">
                 <div class="service-icon">🛑</div>
                 <h3>Brake Services</h3>
                 <p>Instantly qualify leads looking for pad replacements, rotor resurfacing, or fluid flushes.</p>
                 <div class="service-action" onclick="openChatWithPrefill('I need new brake pads for my 2018 Honda Civic')">Run Test Scenario &rarr;</div>
             </div>
 
-            <div class="service-card">
+            <div class="service-card fade-in delay-3">
                 <div class="service-icon">🛢️</div>
                 <h3>Routine Maintenance</h3>
                 <p>Handle high-volume, low-ticket requests like oil changes and tire rotations without lifting a finger.</p>
@@ -231,18 +266,25 @@
         </div>
         <div class="chat-box" id="chat-box">
             <div class="msg bot">Hi! Welcome to SoCal Auto Works. I can help with estimates or logging your repair. What kind of car do you have, and what's the issue?<br><br><span style="color: var(--text-muted); font-size: 12px;">(¡Hola! También hablo español. ¿En qué le puedo ayudar?)</span></div>
+            
+            <!-- Typing Indicator -->
+            <div id="typing-indicator" class="typing-indicator">
+                <span></span><span></span><span></span>
+            </div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="user-input" placeholder="Message..." onkeypress="handleKeyPress(event)">
+            <textarea id="user-input" rows="1" placeholder="Message..." onkeydown="handleKeyPress(event)"></textarea>
             <button class="send-btn" id="send-btn" onclick="sendMessage()">Send</button>
         </div>
     </div>
 
     <script>
-        // --- MATCHES YOUR EXACT WEBHOOK PATH ---
-      const N8N_WEBHOOK_URL = "https://helper-rubbing-refrain.ngrok-free.dev/webhook/apex-repair-chat?t=" + Date.now();
+        // --- LIVE TIMESTAMP CACHE-BUSTER URL ---
+        const N8N_WEBHOOK_URL = "https://helper-rubbing-refrain.ngrok-free.dev/webhook/apex-repair-chat";
         
-      function toggleBackend() {
+        let isSending = false;
+
+        function toggleBackend() {
             document.getElementById('backendPanel').classList.toggle('open');
         }
 
@@ -263,7 +305,7 @@
                 chat.classList.add('open');
                 toggleBtn.classList.add('hidden');
             }
-        }, 1500);
+        }, 2000);
 
         function openChatWithPrefill(text) {
             const chat = document.getElementById('chatContainer');
@@ -272,34 +314,61 @@
             toggleBtn.classList.add('hidden');
             const input = document.getElementById('user-input');
             input.value = text;
+            
+            input.style.height = "auto";
+            input.style.height = (input.scrollHeight) + "px";
+            
             input.focus();
         }
 
+        const userInput = document.getElementById("user-input");
+        userInput.addEventListener("input", function() {
+            this.style.height = "auto";
+            this.style.height = (this.scrollHeight) + "px";
+        });
+
         const sessionId = "session_" + Math.floor(Math.random() * 1000000000);
         const chatBox = document.getElementById("chat-box");
-        const userInput = document.getElementById("user-input");
         const sendBtn = document.getElementById("send-btn");
+        const typingIndicator = document.getElementById("typing-indicator");
 
         function appendMessage(text, sender) {
             const msgDiv = document.createElement("div");
             msgDiv.className = `msg ${sender}`;
             msgDiv.innerHTML = text; 
-            chatBox.appendChild(msgDiv);
+            chatBox.insertBefore(msgDiv, typingIndicator);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        function showTyping() {
+            typingIndicator.style.display = "flex";
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
+        function hideTyping() {
+            typingIndicator.style.display = "none";
+        }
+
         async function sendMessage() {
+            if (isSending) return;
+
             const text = userInput.value.trim();
             if (!text) return;
 
+            isSending = true;
+
             appendMessage(text, "user");
             userInput.value = "";
+            userInput.style.height = "auto";
             userInput.disabled = true;
             sendBtn.disabled = true;
-            sendBtn.innerText = "...";
+            
+            showTyping();
 
             try {
-                    const response = await fetch(N8N_WEBHOOK_URL, {
+                const liveUrl = N8N_WEBHOOK_URL + "?t=" + Date.now();
+                
+                const response = await fetch(liveUrl, {
                     method: "POST",
                     headers: { 
                         "Content-Type": "application/json",
@@ -310,6 +379,7 @@
 
                 const data = await response.json();
                 
+                hideTyping();
                 appendMessage(data.text || "Sorry, I encountered an error.", "bot");
 
                 // --- LIVE EMAIL TERMINAL SIMULATION LOGIC ---
@@ -317,16 +387,13 @@
                     const smsTerminal = document.getElementById("smsTerminal");
                     const panel = document.getElementById("backendPanel");
                     
-                    // Auto-open panel so they see the magic happen
                     if (!panel.classList.contains("open")) {
                         panel.classList.add("open");
                     }
 
-                    // Print the initial queue warning
                     smsTerminal.innerHTML += `<br><span style="color: #f59e0b;">> [LEAD ACQUIRED] Auto-Follow-up Sequence queued for ${data.lead_name || 'Client'} (${data.lead_email || 'Email'}). Dispatching in 60s...</span><br>`;
                     smsTerminal.scrollTop = smsTerminal.scrollHeight;
 
-                    // 60-second delay before firing the simulated EMAIL
                     setTimeout(() => {
                         const time = new Date().toLocaleTimeString();
                         const smsMsg = `Hi ${data.lead_name || 'there'}, it's SoCal Auto Works. Checking in on your vehicle! Did you still need an estimate for the ${data.car_issue || 'repair'}? Let us know!`;
@@ -339,19 +406,25 @@
                 }
 
             } catch (error) {
-                appendMessage("System offline. Could not connect to backend.", "bot");
+                hideTyping();
                 console.error("Transmission Error:", error);
+                
+                // BUG FIXED: Moved the network error message inside the catch block!
+                appendMessage("Network error or outdated browser detected. Please check your connection or call us directly.", "bot");
+                
             } finally {
                 userInput.disabled = false;
                 sendBtn.disabled = false;
-                sendBtn.innerText = "Send";
                 userInput.focus();
-                appendMessage("Network error or outdated browser detected. Please check your connection or call us directly.", "bot");
+                isSending = false;
             }
         }
 
         function handleKeyPress(e) {
-            if (e.key === "Enter") sendMessage();
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
         }
     </script>
 </body>
